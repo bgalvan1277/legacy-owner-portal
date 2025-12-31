@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { sendNewUserAlert } from '@/lib/email';
 import bcrypt from 'bcryptjs';
 
 export const dynamic = 'force-dynamic';
@@ -49,6 +50,8 @@ export async function POST(request: Request) {
             },
         });
 
+        const isApproved = isFirstUser;
+
         // Initialize empty Business Profile for them? 
         // Or wait until approval/login? 
         // Let's initialize it so it's ready.
@@ -59,6 +62,11 @@ export async function POST(request: Request) {
                 status: 'NOT_STARTED'
             }
         });
+
+        // Send admin alert if user is pending approval
+        if (!isApproved) {
+            await sendNewUserAlert(email, `${firstName} ${lastName}`);
+        }
 
         return NextResponse.json({
             success: true,

@@ -80,3 +80,41 @@ export async function sendPasswordResetEmail(email: string, token: string) {
         console.error('Failed to send password reset email:', error);
     }
 }
+
+export async function sendNewUserAlert(newUserEmail: string, newUserName: string) {
+    if (!process.env.RESEND_API_KEY) {
+        return;
+    }
+
+    const resend = new Resend(process.env.RESEND_API_KEY);
+    const adminEmail = 'info@briangalvan.com';
+    const adminPortalLink = 'https://ownerportal.ai/portal/admin';
+
+    try {
+        await resend.emails.send({
+            from: 'Legacy Business Advisors <noreply@notifications.ownerportal.ai>',
+            to: adminEmail,
+            subject: 'New User Registration - Action Required',
+            html: `
+        <div style="font-family: Arial, sans-serif; color: #333;">
+            <h1 style="color: #0d5f41;">New User Registration</h1>
+            <p>A new user has registered and is pending approval:</p>
+            <ul>
+                <li><strong>Name:</strong> ${newUserName}</li>
+                <li><strong>Email:</strong> ${newUserEmail}</li>
+            </ul>
+            <p>Please log in to review and approve this account.</p>
+            <p>
+                 <a href="${adminPortalLink}" style="display: inline-block; padding: 12px 24px; background-color: #0d5f41; color: white; text-decoration: none; border-radius: 5px; font-weight: bold;">
+                    Go to Admin Portal
+                </a>
+            </p>
+            <p><small>Link: <a href="${adminPortalLink}">${adminPortalLink}</a></small></p>
+        </div>
+      `,
+        });
+        console.log(`Admin alert sent for user ${newUserEmail}`);
+    } catch (error) {
+        console.error('Failed to send admin alert:', error);
+    }
+}
