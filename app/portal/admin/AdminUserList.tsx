@@ -7,6 +7,9 @@ import { useRouter } from 'next/navigation';
 interface User {
     id: string;
     email: string;
+    firstName?: string | null;
+    lastName?: string | null;
+    phone?: string | null;
     createdAt: Date;
 }
 
@@ -40,8 +43,10 @@ export default function AdminUserList({ users }: { users: User[] }) {
             {users.map(user => (
                 <div key={user.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-100">
                     <div>
-                        <div className="font-bold text-gray-900">{user.email}</div>
-                        <div className="text-xs text-gray-500">Requested: {new Date(user.createdAt).toLocaleDateString()}</div>
+                        <div className="font-bold text-gray-900">{user.firstName} {user.lastName}</div>
+                        <div className="text-sm text-gray-600">{user.email}</div>
+                        <div className="text-sm text-gray-600">{user.phone}</div>
+                        <div className="text-xs text-gray-500 mt-1">Requested: {new Date(user.createdAt).toLocaleDateString()}</div>
                     </div>
                     <div className="flex gap-2">
                         <button
