@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Loader2 } from 'lucide-react';
+import { Loader2, CheckCircle2 } from 'lucide-react';
 
 import Image from 'next/image';
 
@@ -19,6 +19,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,7 +46,8 @@ export default function Home() {
           setError(data.message || data.error || 'Registration failed');
         } else {
           setSuccessMessage(data.message || "Account created! Please wait for approval.");
-          setIsLogin(true); // Switch to login
+          setIsSuccess(true);
+          // setIsLogin(true); // Don't switch to login, show success card instead
           setPassword('');
           setConfirmPassword('');
         }
@@ -220,6 +222,29 @@ export default function Home() {
           </p>
         </div>
       </div>
-    </main>
+
+      {/* Success Modal / Card Overlay */}
+      {isSuccess && (
+        <div className="absolute inset-0 bg-brand-white flex items-center justify-center p-6 z-50">
+          <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8 border border-gray-100 flex flex-col items-center text-center animate-in fade-in zoom-in duration-300">
+            <CheckCircle2 className="w-24 h-24 text-green-600 mb-6" />
+            <h2 className="text-4xl font-bold text-green-700 mb-4">Success!</h2>
+            <p className="text-gray-600 text-lg mb-8">
+              Your account has been created and is pending approval. Please check your email shortly.
+            </p>
+            <button
+              onClick={() => {
+                setIsSuccess(false);
+                setIsLogin(true);
+                setSuccessMessage('');
+              }}
+              className="w-full bg-brand-dark text-white py-3.5 rounded-lg font-bold shadow-lg hover:bg-[#085035] transition-all"
+            >
+              Return to Home
+            </button>
+          </div>
+        </div>
+      )}
+    </main >
   );
 }

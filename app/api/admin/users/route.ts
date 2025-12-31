@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { sendApprovalEmail } from '@/lib/email';
 import { cookies } from 'next/headers';
 
 export const dynamic = 'force-dynamic';
@@ -30,10 +31,19 @@ export async function PUT(request: Request) {
         }
 
         if (action === 'approve') {
-            await prisma.user.update({
+            const updatedUser = await prisma.user.update({
                 where: { id: userId },
                 data: { isApproved: true },
             });
+
+            // Send Approval Email
+            try {
+                const userName = updatedUser.firstName || 'User';
+                await sendApprovalEmail(updatedUser.email, userName);
+            } catch (e) {
+                console.error("Failed to send email", e);
+            }
+
             return NextResponse.json({ success: true, message: 'User approved' });
         }
 
