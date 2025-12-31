@@ -1,12 +1,12 @@
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 export async function sendApprovalEmail(userEmail: string, userName: string) {
     if (!process.env.RESEND_API_KEY) {
         console.warn('RESEND_API_KEY is not set. Skipping email sending.');
         return;
     }
+
+    const resend = new Resend(process.env.RESEND_API_KEY);
 
     try {
         const { data, error } = await resend.emails.send({
