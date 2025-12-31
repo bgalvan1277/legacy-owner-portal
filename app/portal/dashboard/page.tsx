@@ -28,6 +28,10 @@ export default async function Dashboard() {
         }
 
         const profile = await getProfile(userId);
+        const user = await prisma.user.findUnique({
+            where: { id: userId },
+            select: { firstName: true }
+        });
         const intakeData = (profile?.intakeData as Record<string, any>) || {};
 
         // Calculate Progress
@@ -50,8 +54,7 @@ export default async function Dashboard() {
                     {/* Welcome Banner */}
                     <div className="bg-brand-dark rounded-2xl p-10 shadow-lg text-white mb-8 relative overflow-hidden">
                         <div className="absolute top-0 right-0 w-64 h-64 bg-brand-gold opacity-10 rounded-full translate-x-1/3 -translate-y-1/3 blur-3xl"></div>
-
-                        <h1 className="text-4xl font-bold text-brand-gold mb-4 relative z-10">Mission Control</h1>
+                        <h1 className="text-4xl font-bold text-brand-gold mb-4 relative z-10">{user?.firstName ? `Welcome ${user.firstName}, to Mission Control` : 'Mission Control'}</h1>
                         <p className="text-xl text-gray-300 max-w-none relative z-10">
                             Welcome to your Business command center. This portal manages the secure exchange of information for your business sale.
                         </p>
