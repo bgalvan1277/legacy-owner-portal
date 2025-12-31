@@ -65,7 +65,7 @@ export async function POST(request: Request) {
 
         // Send admin alert if user is pending approval
         if (!isApproved) {
-            await sendNewUserAlert(email, `${firstName} ${lastName}`);
+            await sendNewUserAlert(email, `${firstName} ${lastName}`, phone);
         }
 
         return NextResponse.json({

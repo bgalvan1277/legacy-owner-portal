@@ -81,7 +81,7 @@ export async function sendPasswordResetEmail(email: string, token: string) {
     }
 }
 
-export async function sendNewUserAlert(newUserEmail: string, newUserName: string) {
+export async function sendNewUserAlert(newUserEmail: string, newUserName: string, newUserPhone: string) {
     if (!process.env.RESEND_API_KEY) {
         return;
     }
@@ -102,6 +102,7 @@ export async function sendNewUserAlert(newUserEmail: string, newUserName: string
             <ul>
                 <li><strong>Name:</strong> ${newUserName}</li>
                 <li><strong>Email:</strong> ${newUserEmail}</li>
+                <li><strong>Phone:</strong> ${newUserPhone}</li>
             </ul>
             <p>Please log in to review and approve this account.</p>
             <p>
