@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Loader2, CheckCircle2, Eye, EyeOff } from 'lucide-react';
+import Link from 'next/link';
 
 import Image from 'next/image';
 
@@ -125,14 +126,14 @@ export default function Home() {
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Email or Username</label>
             <input
-              type="email"
+              type="text"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-brand-gold focus:border-transparent outline-none transition-all text-gray-900 placeholder:text-gray-400"
-              placeholder="name@company.com"
+              placeholder="name@company.com or username"
             />
           </div>
 
@@ -194,6 +195,11 @@ export default function Home() {
               >
                 {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
               </button>
+            </div>
+            <div className="flex justify-end mt-1">
+              <Link href="/forgot-password" className="text-sm text-brand-gold hover:underline">
+                Forgot Password?
+              </Link>
             </div>
           </div>
 

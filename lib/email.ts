@@ -44,3 +44,38 @@ export async function sendApprovalEmail(userEmail: string, userName: string) {
         return { success: false, error };
     }
 }
+
+export async function sendPasswordResetEmail(email: string, token: string) {
+    if (!process.env.RESEND_API_KEY) {
+        console.warn('RESEND_API_KEY is not set. Skipping password reset email.');
+        return;
+    }
+
+    const resend = new Resend(process.env.RESEND_API_KEY);
+    const link = `${process.env.NEXTAUTH_URL}/reset-password?token=${token}`;
+
+    try {
+        await resend.emails.send({
+            from: 'Legacy Business Advisors <onboarding@resend.dev>',
+            to: email,
+            subject: 'Reset Your Password',
+            html: `
+        <div style="font-family: Arial, sans-serif; color: #333;">
+            <h1 style="color: #0d5f41;">Password Reset Request</h1>
+            <p>We received a request to reset your password. Click the link below to choose a new password:</p>
+            <p>
+                 <a href="${link}" style="display: inline-block; padding: 12px 24px; background-color: #0d5f41; color: white; text-decoration: none; border-radius: 5px; font-weight: bold;">
+                    Reset Password
+                </a>
+            </p>
+            <p>This link will expire in 1 hour.</p>
+            <p>If you didn't request this, you can safely ignore this email.</p>
+             <p><small>Link: <a href="${link}">${link}</a></small></p>
+        </div>
+      `,
+        });
+        console.log(`Password reset email sent to ${email}`);
+    } catch (error) {
+        console.error('Failed to send password reset email:', error);
+    }
+}

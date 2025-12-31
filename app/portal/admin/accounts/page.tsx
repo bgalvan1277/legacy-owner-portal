@@ -1,8 +1,9 @@
 import { prisma } from '@/lib/prisma';
 import { cookies } from 'next/headers';
 import ClientRedirect from '@/components/ClientRedirect';
-import { ShieldAlert, Users, ExternalLink } from 'lucide-react';
+import { ShieldAlert, Users } from 'lucide-react';
 import { intakePhases } from '@/app/intakeConfig';
+import UserRowActions from './UserRowActions';
 
 export const dynamic = 'force-dynamic';
 
@@ -30,12 +31,13 @@ export default async function AccountsPage() {
 
     // Fetch All Users matching role USER (or all?)
     const allUsers = await prisma.user.findMany({
+        where: { email: { not: 'admin' } },
         orderBy: { createdAt: 'desc' },
         include: { businessProfile: true },
     });
 
     return (
-        <div className="font-[family-name:var(--font-geist-sans)] max-w-6xl mx-auto">
+        <div className="font-[family-name:var(--font-geist-sans)] w-full px-6">
             <div className="bg-brand-dark text-white rounded-2xl p-8 mb-8 shadow-lg flex justify-between items-center">
                 <div>
                     <h1 className="text-3xl font-bold text-brand-gold">Account Management</h1>
@@ -48,15 +50,15 @@ export default async function AccountsPage() {
                 <table className="w-full text-left">
                     <thead className="bg-gray-50 border-b border-gray-100">
                         <tr>
-                            <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-widest">Email</th>
-                            <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-widest">First Name</th>
-                            <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-widest">Last Name</th>
-                            <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-widest">Phone</th>
-                            <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-widest">Intake Progress</th>
-                            <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-widest">Role</th>
-                            <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-widest">Status</th>
-                            <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-widest">Created</th>
-                            <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-widest text-right">Action</th>
+                            <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-widest whitespace-nowrap">Email</th>
+                            <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-widest whitespace-nowrap">First Name</th>
+                            <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-widest whitespace-nowrap">Last Name</th>
+                            <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-widest whitespace-nowrap">Phone</th>
+                            <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-widest whitespace-nowrap">Intake Progress</th>
+                            <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-widest whitespace-nowrap">Role</th>
+                            <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-widest whitespace-nowrap">Status</th>
+                            <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-widest whitespace-nowrap">Created</th>
+                            <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-widest text-right whitespace-nowrap">Actions</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-100">
@@ -70,11 +72,11 @@ export default async function AccountsPage() {
 
                             return (
                                 <tr key={u.id} className="hover:bg-gray-50 transition-colors">
-                                    <td className="px-6 py-4 font-medium text-gray-900">{u.email}</td>
-                                    <td className="px-6 py-4 text-gray-600">{u.firstName || '-'}</td>
-                                    <td className="px-6 py-4 text-gray-600">{u.lastName || '-'}</td>
-                                    <td className="px-6 py-4 text-gray-600">{u.phone || '-'}</td>
-                                    <td className="px-6 py-4">
+                                    <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">{u.email}</td>
+                                    <td className="px-6 py-4 text-gray-600 whitespace-nowrap">{u.firstName || '-'}</td>
+                                    <td className="px-6 py-4 text-gray-600 whitespace-nowrap">{u.lastName || '-'}</td>
+                                    <td className="px-6 py-4 text-gray-600 whitespace-nowrap">{u.phone || '-'}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap">
                                         <div className="flex items-center gap-2">
                                             <div className="w-16 bg-gray-200 rounded-full h-1.5 overflow-hidden">
                                                 <div className={`h-full ${progress === 100 ? 'bg-green-500' : 'bg-brand-gold'}`} style={{ width: `${progress}%` }}></div>
@@ -82,23 +84,21 @@ export default async function AccountsPage() {
                                             <span className="text-xs text-gray-600 font-mono">{progress}%</span>
                                         </div>
                                     </td>
-                                    <td className="px-6 py-4">
+                                    <td className="px-6 py-4 whitespace-nowrap">
                                         <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
                                         ${u.role === 'ADMIN' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800'}`}>
                                             {u.role}
                                         </span>
                                     </td>
-                                    <td className="px-6 py-4">
+                                    <td className="px-6 py-4 whitespace-nowrap">
                                         <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
                                         ${u.isApproved ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
                                             {u.isApproved ? 'Active' : 'Pending'}
                                         </span>
                                     </td>
-                                    <td className="px-6 py-4 text-gray-500 text-sm">{u.createdAt.toLocaleDateString()}</td>
-                                    <td className="px-6 py-4 text-right">
-                                        <button className="text-brand-dark hover:text-brand-gold font-medium text-sm inline-flex items-center gap-1">
-                                            View <ExternalLink size={14} />
-                                        </button>
+                                    <td className="px-6 py-4 text-gray-500 text-sm whitespace-nowrap">{u.createdAt.toLocaleDateString()}</td>
+                                    <td className="px-6 py-4 text-right whitespace-nowrap">
+                                        <UserRowActions userId={u.id} />
                                     </td>
                                 </tr>
                             );

@@ -25,6 +25,8 @@ model User {
   updatedAt       DateTime          @updatedAt
   isApproved      Boolean           @default(false)
   role            String            @default("USER") // "USER" or "ADMIN"
+  resetToken      String?
+  resetTokenExpiry DateTime?
   businessProfile BusinessProfile?
   documents       Document[]
 }
