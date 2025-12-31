@@ -57,3 +57,11 @@ model KnowledgeSnippet {
   content   String   @db.Text
   createdAt DateTime @default(now())
 }
+
+model ChatCache {
+  id         String   @id @default(uuid())
+  promptHash String   @unique
+  prompt     String   @db.Text
+  response   String   @db.Text
+  createdAt  DateTime @default(now())
+}

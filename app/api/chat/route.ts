@@ -1,9 +1,34 @@
 import { NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { prisma } from '@/lib/prisma';
+import crypto from 'crypto';
 
 // 1. Initialize Gemini
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
+
+async function generateContentWithRetry(model: any, prompt: string) {
+    let attempts = 0;
+    const maxAttempts = 3;
+
+    while (attempts < maxAttempts) {
+        try {
+            return await model.generateContent(prompt);
+        } catch (error: any) {
+            attempts++;
+            const isRateLimit = error.message?.includes('429') ||
+                error.message?.includes('Rate exceeded') ||
+                error.message?.includes('quota') ||
+                error.status === 429;
+
+            if (isRateLimit && attempts < maxAttempts) {
+                console.warn(`Gemini Rate Limit hit. Sleeping 5 seconds... (Attempt ${attempts}/${maxAttempts})`);
+                await new Promise(resolve => setTimeout(resolve, 5000));
+                continue;
+            }
+            throw error;
+        }
+    }
+}
 
 export async function POST(request: Request) {
     try {
@@ -33,16 +58,42 @@ The user is currently viewing the page: "${pageContext}". Use this to be helpful
 Answer the user's question based on the above.
 `;
 
-        // 4. Call Gemini
-        // User requested Gemini 3 Flash.
-        const model = genAI.getGenerativeModel({ model: "gemini-3-flash-preview" });
-
-        // Construct history (simplified for now, just last message + system context)
+        // Construct full prompt for caching
         const prompt = `${systemPrompt}\n\nUser Question: ${lastMessage.text}`;
 
-        const result = await model.generateContent(prompt);
+        // --- CACHE CHECK ---
+        const promptHash = crypto.createHash('md5').update(prompt).digest('hex');
+        const cachedEntry = await prisma.chatCache.findUnique({
+            where: { promptHash },
+        });
+
+        if (cachedEntry) {
+            console.log('CACHE HIT:', promptHash);
+            return NextResponse.json({ reply: cachedEntry.response });
+        }
+        console.log('CACHE MISS:', promptHash);
+        // -------------------
+
+        // 4. Call Gemini
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+        const result = await generateContentWithRetry(model, prompt);
         const response = result.response;
         const text = response.text();
+
+        // --- CACHE SAVE ---
+        try {
+            await prisma.chatCache.create({
+                data: {
+                    promptHash,
+                    prompt: prompt.substring(0, 5000), // Truncate if too long, just for debug
+                    response: text,
+                },
+            });
+        } catch (e) {
+            console.error('Failed to save to cache:', e);
+        }
+        // ------------------
 
         return NextResponse.json({ reply: text });
 
