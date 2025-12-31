@@ -126,14 +126,14 @@ export default function Home() {
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Email or Username</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
             <input
               type="text"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-brand-gold focus:border-transparent outline-none transition-all text-gray-900 placeholder:text-gray-400"
-              placeholder="name@company.com or username"
+              placeholder="name@company.com"
             />
           </div>
 

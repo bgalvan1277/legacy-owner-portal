@@ -19,12 +19,12 @@ export async function sendApprovalEmail(userEmail: string, userName: string) {
             <p>Congratulations <strong>${userName}</strong>,</p>
             <p>Your account has been approved. You can now access the Owner Portal.</p>
             <p>
-                <a href="${process.env.NEXTAUTH_URL}" style="display: inline-block; padding: 12px 24px; background-color: #0d5f41; color: white; text-decoration: none; border-radius: 5px; font-weight: bold;">
+                <a href="https://ownerportal.ai" style="display: inline-block; padding: 12px 24px; background-color: #0d5f41; color: white; text-decoration: none; border-radius: 5px; font-weight: bold;">
                     Go to Portal
                 </a>
             </p>
             <p>If the button doesn't work, copy and paste this link into your browser:</p>
-            <p><a href="${process.env.NEXTAUTH_URL}">${process.env.NEXTAUTH_URL}</a></p>
+            <p><a href="https://ownerportal.ai">https://ownerportal.ai</a></p>
             <br/>
             <p>Best regards,<br/>The Legacy Business Advisors Team</p>
         </div>
@@ -52,7 +52,8 @@ export async function sendPasswordResetEmail(email: string, token: string) {
     }
 
     const resend = new Resend(process.env.RESEND_API_KEY);
-    const link = `${process.env.NEXTAUTH_URL}/reset-password?token=${token}`;
+    const baseUrl = 'https://ownerportal.ai';
+    const link = `${baseUrl}/reset-password?token=${token}`;
 
     try {
         await resend.emails.send({
