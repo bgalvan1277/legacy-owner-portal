@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { Loader2, Key, User, Phone, Mail } from 'lucide-react';
+import { Loader2, Key, User, Phone, Mail, Eye, EyeOff } from 'lucide-react';
 
 export default function ProfilePage() {
     // Personal Details State
@@ -18,6 +18,8 @@ export default function ProfilePage() {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [loadingPassword, setLoadingPassword] = useState(false);
     const [passwordMessage, setPasswordMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
+    const [showNewPassword, setShowNewPassword] = useState(false);
+    const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
 
     // Fetch User Details on Mount
     useEffect(() => {
@@ -215,27 +217,45 @@ export default function ProfilePage() {
                 <form onSubmit={handleUpdatePassword} className="space-y-6">
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">New Password</label>
-                        <input
-                            type="password"
-                            required
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            className="w-full px-4 py-3 rounded-lg border border-gray-300 text-gray-900 focus:ring-2 focus:ring-brand-gold focus:border-transparent outline-none transition-all"
-                            placeholder="••••••••"
-                            minLength={6}
-                        />
+                        <div className="relative">
+                            <input
+                                type={showNewPassword ? "text" : "password"}
+                                required
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                className="w-full px-4 py-3 rounded-lg border border-gray-300 text-gray-900 focus:ring-2 focus:ring-brand-gold focus:border-transparent outline-none transition-all pr-10"
+                                placeholder="••••••••"
+                                minLength={6}
+                            />
+                            <button
+                                type="button"
+                                onClick={() => setShowNewPassword(!showNewPassword)}
+                                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
+                            >
+                                {showNewPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                            </button>
+                        </div>
                     </div>
 
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">Confirm New Password</label>
-                        <input
-                            type="password"
-                            required
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                            className="w-full px-4 py-3 rounded-lg border border-gray-300 text-gray-900 focus:ring-2 focus:ring-brand-gold focus:border-transparent outline-none transition-all"
-                            placeholder="••••••••"
-                        />
+                        <div className="relative">
+                            <input
+                                type={showConfirmNewPassword ? "text" : "password"}
+                                required
+                                value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                className="w-full px-4 py-3 rounded-lg border border-gray-300 text-gray-900 focus:ring-2 focus:ring-brand-gold focus:border-transparent outline-none transition-all pr-10"
+                                placeholder="••••••••"
+                            />
+                            <button
+                                type="button"
+                                onClick={() => setShowConfirmNewPassword(!showConfirmNewPassword)}
+                                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
+                            >
+                                {showConfirmNewPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                            </button>
+                        </div>
                     </div>
 
                     <div className="pt-4 border-t border-gray-100 text-right">
