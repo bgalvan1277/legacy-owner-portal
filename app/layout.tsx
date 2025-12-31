@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import { UIProvider } from "./UIContext";
+import BrokerChat from "@/components/BrokerChat";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -28,8 +30,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <UIProvider>
+          {children}
+          <BrokerChat />
+        </UIProvider>
       </body>
-    </html>
+    </html >
   );
 }

@@ -1,0 +1,56 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  firstName String?
+  lastName  String?
+  phone     String?
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  isApproved      Boolean           @default(false)
+  role            String            @default("USER") // "USER" or "ADMIN"
+  businessProfile BusinessProfile?
+  documents       Document[]
+}
+
+model BusinessProfile {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  status    String   @default("NOT_STARTED") // NOT_STARTED, IN_PROGRESS, COMPLETED
+  intakeData Json?    // Stores the wizard answers
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Document {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  filename  String
+  fileType  String   // MIME type
+  size      Int
+  data      Bytes    // Storing content directly for MVP
+  createdAt DateTime @default(now())
+}
+
+model KnowledgeSnippet {
+  id        String   @id @default(uuid())
+  content   String   @db.Text
+  createdAt DateTime @default(now())
+}
