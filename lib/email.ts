@@ -10,7 +10,7 @@ export async function sendApprovalEmail(userEmail: string, userName: string) {
 
     try {
         const { data, error } = await resend.emails.send({
-            from: 'Legacy Business Advisors <onboarding@resend.dev>', // Update this with your verified domain if available, or use the testing domain
+            from: 'Legacy Business Advisors <noreply@notifications.ownerportal.ai>',
             to: [userEmail],
             subject: 'Welcome to Legacy Business Advisors - Account Approved',
             html: `
@@ -56,7 +56,7 @@ export async function sendPasswordResetEmail(email: string, token: string) {
 
     try {
         await resend.emails.send({
-            from: 'Legacy Business Advisors <onboarding@resend.dev>',
+            from: 'Legacy Business Advisors <noreply@notifications.ownerportal.ai>',
             to: email,
             subject: 'Reset Your Password',
             html: `
