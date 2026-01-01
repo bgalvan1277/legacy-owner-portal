@@ -87,7 +87,7 @@ export default function Home() {
         <div className="text-center mb-8 flex flex-col items-center">
           <div className="relative w-64 h-24 mb-2">
             <Image
-              src="/assets/logo-dark.png"
+              src="/assets/logo-v2.png"
               alt="Barnes Walker"
               fill
               className="object-contain"
@@ -229,7 +229,7 @@ export default function Home() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-brand-dark text-white py-3.5 rounded-lg font-bold shadow-lg hover:bg-[#085035] transition-all transform hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="w-full bg-brand-dark text-white py-3.5 rounded-lg font-bold shadow-lg hover:bg-[#2c4a3e] transition-all transform hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             {loading && <Loader2 className="animate-spin" size={20} />}
             {isLogin ? 'Sign In' : 'Create Account'}
@@ -264,7 +264,7 @@ export default function Home() {
                 setIsLogin(true);
                 setSuccessMessage('');
               }}
-              className="w-full bg-brand-dark text-white py-3.5 rounded-lg font-bold shadow-lg hover:bg-[#085035] transition-all"
+              className="w-full bg-brand-dark text-white py-3.5 rounded-lg font-bold shadow-lg hover:bg-[#2c4a3e] transition-all"
             >
               Return to Home
             </button>

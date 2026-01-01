@@ -66,7 +66,7 @@ export default async function Dashboard() {
                         {/* Left Column: Video (Span 2) */}
                         <div className="lg:col-span-2 h-full">
                             <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-8 h-full flex flex-col justify-center">
-                                <h2 className="text-2xl font-bold text-[#085035] mb-6">A Message from Barnes Walker</h2>
+                                <h2 className="text-2xl font-bold text-[#2c4a3e] mb-6">A Message from Barnes Walker</h2>
                                 <div className="w-full aspect-video rounded-lg overflow-hidden bg-gray-100">
                                     <iframe
                                         width="100%"
@@ -90,12 +90,12 @@ export default async function Dashboard() {
                                     <h3 className="text-gray-500 text-xs font-semibold uppercase tracking-wider">Intake Progress</h3>
                                 </div>
                                 <div className="flex items-baseline gap-2 mb-3">
-                                    <span className="text-4xl font-bold text-[#085035]">{progressPercent}%</span>
+                                    <span className="text-4xl font-bold text-[#2c4a3e]">{progressPercent}%</span>
                                     <span className="text-gray-400 text-sm font-medium">Complete</span>
                                 </div>
                                 <Link
                                     href="/portal/intake"
-                                    className="block w-full text-center bg-[#085035] text-white font-bold py-2.5 rounded-lg hover:bg-[#06402a] transition-colors text-sm"
+                                    className="block w-full text-center bg-[#2c4a3e] text-white font-bold py-2.5 rounded-lg hover:bg-[#1a2f27] transition-colors text-sm"
                                 >
                                     Continue Business Intake
                                 </Link>
@@ -103,10 +103,10 @@ export default async function Dashboard() {
 
                             {/* Seller Resources Card */}
                             <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-100 flex-1 flex flex-col justify-center">
-                                <h3 className="text-[#085035] text-lg font-bold mb-2">Seller Resources</h3>
+                                <h3 className="text-[#2c4a3e] text-lg font-bold mb-2">Seller Resources</h3>
                                 <Link
                                     href="/portal/resources"
-                                    className="block w-full text-center bg-white text-[#085035] font-bold py-2.5 rounded-lg border-2 border-[#085035] hover:bg-green-50 transition-colors text-sm"
+                                    className="block w-full text-center bg-white text-[#2c4a3e] font-bold py-2.5 rounded-lg border-2 border-[#2c4a3e] hover:bg-green-50 transition-colors text-sm"
                                 >
                                     View Resources
                                 </Link>

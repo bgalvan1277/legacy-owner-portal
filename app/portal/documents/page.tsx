@@ -119,7 +119,7 @@ export default function DocumentsPage() {
                         <button
                             type="submit"
                             disabled={!selectedFile || uploading}
-                            className="w-full bg-brand-dark text-white py-2.5 rounded-lg font-medium shadow hover:bg-[#085035] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                            className="w-full bg-brand-dark text-white py-2.5 rounded-lg font-medium shadow hover:bg-[#2c4a3e] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                         >
                             {uploading ? (
                                 <>

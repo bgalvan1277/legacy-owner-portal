@@ -262,7 +262,7 @@ export default function ProfilePage() {
                         <button
                             type="submit"
                             disabled={loadingPassword}
-                            className="bg-brand-dark text-white px-6 py-2.5 rounded-lg font-medium shadow hover:bg-[#085035] transition-all disabled:opacity-50 flex items-center gap-2 ml-auto"
+                            className="bg-brand-dark text-white px-6 py-2.5 rounded-lg font-medium shadow hover:bg-[#2c4a3e] transition-all disabled:opacity-50 flex items-center gap-2 ml-auto"
                         >
                             {loadingPassword && <Loader2 className="animate-spin" size={18} />}
                             Update Password

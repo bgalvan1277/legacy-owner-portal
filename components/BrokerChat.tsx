@@ -169,7 +169,7 @@ export default function BrokerChat() {
                         <button
                             type="submit"
                             disabled={!inputText.trim()}
-                            className="bg-[#0B3D2E] text-white p-3 rounded-xl hover:bg-[#085035] disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-lg"
+                            className="bg-[#0B3D2E] text-white p-3 rounded-xl hover:bg-[#2c4a3e] disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-lg"
                         >
                             <Send size={20} />
                         </button>

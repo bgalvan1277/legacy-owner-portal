@@ -180,7 +180,7 @@ function WizardContent() {
                 </button>
                 <button
                     onClick={handleNext}
-                    className="bg-brand-dark text-brand-white px-8 py-2.5 rounded-full font-semibold shadow-lg hover:shadow-xl hover:bg-[#085035] transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+                    className="bg-brand-dark text-brand-white px-8 py-2.5 rounded-full font-semibold shadow-lg hover:shadow-xl hover:bg-[#2c4a3e] transition-all transform hover:-translate-y-0.5 active:translate-y-0"
                 >
                     {currentPhaseIndex === intakePhases.length - 1 ? 'Submit' : 'Next Step'}
                 </button>

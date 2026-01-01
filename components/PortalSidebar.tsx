@@ -33,7 +33,7 @@ export default function PortalSidebar({ role }: { role?: string, email?: string 
     return (
         <aside className="w-64 bg-brand-dark text-white flex flex-col fixed h-full shadow-xl z-20">
             {/* Logo Area */}
-            <div className="p-8 border-b border-[#085035]">
+            <div className="p-8 border-b border-[#2c4a3e]">
                 <div className="relative w-48 h-12">
                     <Image
                         src="/assets/logo-white.png"
@@ -68,7 +68,7 @@ export default function PortalSidebar({ role }: { role?: string, email?: string 
                             <button
                                 onClick={() => setIntakeExpanded(!intakeExpanded)}
                                 className={`w-full flex items-center justify-between px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200
-                                ${pathname.includes('/portal/intake') ? 'bg-[#1a5f45] text-white' : 'text-gray-300 hover:bg-[#085035] hover:text-white'}`}
+                                ${pathname.includes('/portal/intake') ? 'bg-[#2c4a3e] text-white' : 'text-gray-300 hover:bg-[#2c4a3e] hover:text-white'}`}
                             >
                                 <div className="flex items-center gap-3">
                                     <FileText size={20} />
@@ -78,8 +78,8 @@ export default function PortalSidebar({ role }: { role?: string, email?: string 
                             </button>
 
                             {intakeExpanded && (
-                                <div className="mt-2 ml-4 space-y-1 pl-4 border-l border-[#085035]">
-                                    <Link href="/portal/intake" className={`block px-3 py-2 rounded-md text-xs font-medium transition-colors mb-2 ${pathname === '/portal/intake' ? 'text-brand-gold bg-[#085035]/50' : 'text-gray-400 hover:text-white'}`}>
+                                <div className="mt-2 ml-4 space-y-1 pl-4 border-l border-[#2c4a3e]">
+                                    <Link href="/portal/intake" className={`block px-3 py-2 rounded-md text-xs font-medium transition-colors mb-2 ${pathname === '/portal/intake' ? 'text-brand-gold bg-[#2c4a3e]/50' : 'text-gray-400 hover:text-white'}`}>
                                         Main Overview Page
                                     </Link>
                                     {intakePhases.map((phase, index) => {
@@ -90,8 +90,8 @@ export default function PortalSidebar({ role }: { role?: string, email?: string 
                                                 href={`/portal/intake/wizard?step=${index}`}
                                                 className={`flex items-center gap-2 px-3 py-2 rounded-md text-xs transition-colors group mb-0.5
                                                     ${isActiveStep
-                                                        ? 'bg-[#1a5f45] text-white shadow-sm ring-1 ring-brand-gold/20'
-                                                        : 'text-gray-400 hover:text-white hover:bg-[#085035]/30'
+                                                        ? 'bg-[#2c4a3e] text-white shadow-sm ring-1 ring-brand-gold/20'
+                                                        : 'text-gray-400 hover:text-white hover:bg-[#2c4a3e]/30'
                                                     }`}
                                             >
                                                 <span className={`w-5 h-5 rounded-full border flex items-center justify-center text-[10px] transition-colors
@@ -116,7 +116,7 @@ export default function PortalSidebar({ role }: { role?: string, email?: string 
 
                         <button
                             onClick={() => setIsChatOpen(true)}
-                            className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 text-gray-300 hover:bg-[#085035] hover:text-white"
+                            className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 text-gray-300 hover:bg-[#2c4a3e] hover:text-white"
                         >
                             <MessageSquare size={20} />
                             <span>Business Concierge</span>
@@ -139,8 +139,8 @@ export default function PortalSidebar({ role }: { role?: string, email?: string 
             </nav>
 
             {/* Profile Footer */}
-            <Link href="/portal/profile" className="p-4 border-t border-[#085035] hover:bg-[#085035] transition-colors block cursor-pointer group">
-                <div className="flex items-center gap-3 px-4 py-3 rounded-lg bg-[#085035]/50 group-hover:bg-[#085035]">
+            <Link href="/portal/profile" className="p-4 border-t border-[#2c4a3e] hover:bg-[#2c4a3e] transition-colors block cursor-pointer group">
+                <div className="flex items-center gap-3 px-4 py-3 rounded-lg bg-[#2c4a3e]/50 group-hover:bg-[#2c4a3e]">
                     <div className="w-8 h-8 rounded-full bg-brand-gold/20 flex items-center justify-center text-brand-gold font-bold text-xs">BW</div>
                     <div className="overflow-hidden">
                         <div className="text-sm font-medium truncate">Update Profile</div>
@@ -156,7 +156,7 @@ function SidebarLink({ href, icon, label, active = false }: { href: string; icon
     return (
         <Link
             href={href}
-            className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${active ? 'bg-[#1a5f45] text-white shadow-lg shadow-[#000000]/10 ring-1 ring-brand-gold/10' : 'text-gray-300 hover:bg-[#085035] hover:text-white'}`}
+            className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${active ? 'bg-[#2c4a3e] text-white shadow-lg shadow-[#000000]/10 ring-1 ring-brand-gold/10' : 'text-gray-300 hover:bg-[#2c4a3e] hover:text-white'}`}
         >
             {icon}
             <span>{label}</span>
