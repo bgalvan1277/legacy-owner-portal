@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Trash2, Loader2, ExternalLink } from 'lucide-react';
+import Link from 'next/link';
 
 interface UserRowActionsProps {
     userId: string;
@@ -38,9 +39,12 @@ export default function UserRowActions({ userId }: UserRowActionsProps) {
     return (
         <div className="flex justify-end gap-3">
             {/* Placeholder for View - logic handled elsewhere or we can add link here */}
-            <button className="text-brand-dark hover:text-brand-gold font-medium text-sm inline-flex items-center gap-1">
+            <Link
+                href={`/portal/admin/accounts/${userId}`}
+                className="text-brand-dark hover:text-brand-gold font-medium text-sm inline-flex items-center gap-1"
+            >
                 View <ExternalLink size={14} />
-            </button>
+            </Link>
 
             <button
                 onClick={handleDelete}

@@ -9,6 +9,7 @@ interface QuestionFieldProps {
 }
 
 export default function QuestionField({ question, value, onChange, error }: QuestionFieldProps) {
+    const [uploading, setUploading] = React.useState(false);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         onChange(question.id, e.target.value);
@@ -27,6 +28,35 @@ export default function QuestionField({ question, value, onChange, error }: Ques
         }
     };
 
+    const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        setUploading(true);
+        const formData = new FormData();
+        formData.append('file', file);
+
+        try {
+            const res = await fetch('/api/documents', {
+                method: 'POST',
+                body: formData,
+            });
+
+            if (!res.ok) throw new Error('Upload failed');
+
+            const data = await res.json();
+            // Store the full document object (id, filename) so we can link to it later
+            if (data.success && data.document) {
+                onChange(question.id, data.document);
+            }
+        } catch (err) {
+            console.error(err);
+            alert('Failed to upload file. Please try again.');
+        } finally {
+            setUploading(false);
+        }
+    };
+
     return (
         <div className="mb-6 animate-in slide-in-from-bottom-2 duration-500">
             <label className="block text-sm font-semibold text-brand-dark mb-2">
@@ -34,13 +64,13 @@ export default function QuestionField({ question, value, onChange, error }: Ques
             </label>
 
             {/* TEXT / EMAIL / TEL / NUMBER / DATE */}
-            {['text', 'email', 'tel', 'number', 'date'].includes(question.type) && (
+            {['text', 'email', 'tel', 'number', 'date', 'url'].includes(question.type) && (
                 <input
-                    type={question.type}
-                    value={value || ''}
+                    type={question.type === 'url' ? 'text' : question.type}
+                    value={typeof value === 'object' ? '' : (value || '')}
                     onChange={handleChange}
                     className="w-full px-4 py-3 rounded-lg border border-gray-300 text-gray-900 focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/20 outline-none transition-all placeholder:text-gray-400"
-                    placeholder={`Enter ${question.label.toLowerCase()}...`}
+                    placeholder={question.placeholder || `Enter ${question.label.toLowerCase()}...`}
                 />
             )}
 
@@ -51,7 +81,7 @@ export default function QuestionField({ question, value, onChange, error }: Ques
                     onChange={handleChange}
                     rows={4}
                     className="w-full px-4 py-3 rounded-lg border border-gray-300 text-gray-900 focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/20 outline-none transition-all placeholder:text-gray-400"
-                    placeholder={`Enter ${question.label.toLowerCase()}...`}
+                    placeholder={question.placeholder || `Enter ${question.label.toLowerCase()}...`}
                 />
             )}
 
@@ -112,13 +142,33 @@ export default function QuestionField({ question, value, onChange, error }: Ques
                 </div>
             )}
 
-            {/* FILE UPLOAD (Mock) */}
+            {/* FILE UPLOAD (Real) */}
             {question.type === 'file' && (
                 <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-brand-blue transition-colors cursor-pointer bg-gray-50">
-                    <p className="text-brand-dark font-medium">Click to upload or drag and drop</p>
-                    <p className="text-xs text-gray-500 mt-1">PDF, DOCX, JPG up to 10MB</p>
-                    <input type="file" className="hidden" onChange={(e) => onChange(question.id, e.target.files?.[0]?.name || 'mock_file.pdf')} />
-                    {value && <div className="mt-2 text-sm text-green-600 font-semibold ">{value} (Mock Uploaded)</div>}
+                    {uploading ? (
+                        <div className="flex flex-col items-center justify-center py-4">
+                            <div className="w-6 h-6 border-2 border-brand-blue border-t-transparent rounded-full animate-spin mb-2"></div>
+                            <p className="text-sm text-gray-600">Uploading...</p>
+                        </div>
+                    ) : (
+                        <>
+                            <p className="text-brand-dark font-medium">Click to upload or drag and drop</p>
+                            <p className="text-xs text-gray-500 mt-1">PDF, DOCX, JPG up to 10MB</p>
+                            <input
+                                type="file"
+                                className="hidden"
+                                onChange={handleFileUpload}
+                                accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                            />
+                            {/* Display Value */}
+                            {value && (
+                                <div className="mt-4 p-3 bg-white border rounded-lg flex items-center gap-2 text-sm text-green-700">
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                                    <span className="font-medium truncate max-w-xs">{value.filename || value.name || value}</span>
+                                </div>
+                            )}
+                        </>
+                    )}
                 </div>
             )}
 
