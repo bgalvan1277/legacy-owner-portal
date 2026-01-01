@@ -47,6 +47,10 @@ export default async function UserDetailPage({ params }: { params: { id: string 
     const { businessProfile } = targetUser;
     const intakeData = (businessProfile?.intakeData as Record<string, any>) || {};
 
+    // Calculate Progress
+    const completedPhases = intakePhases.filter(p => p.questions.some(q => intakeData[q.id])).length;
+    const progress = Math.round((completedPhases / intakePhases.length) * 100);
+
     const renderAnswer = (question: Question) => {
         const val = intakeData[question.id];
 
@@ -111,6 +115,12 @@ export default async function UserDetailPage({ params }: { params: { id: string 
                                 {targetUser.isApproved ? 'Active' : 'Pending'}
                             </span>
                         </div>
+                    </div>
+
+                    {/* Completion Status */}
+                    <div className="text-right">
+                        <div className="text-4xl font-bold text-brand-gold">{progress}%</div>
+                        <div className="text-sm text-gray-500 font-medium uppercase tracking-wide">Completion</div>
                     </div>
                 </div>
             </div>
