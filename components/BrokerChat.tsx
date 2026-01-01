@@ -105,7 +105,7 @@ export default function BrokerChat() {
             {/* Drawer */}
             <div className="fixed inset-y-0 right-0 z-50 w-full md:w-[40%] bg-[#FAF9F6] shadow-2xl flex flex-col transform transition-transform duration-300 ease-in-out">
                 {/* Header */}
-                <div className="bg-[#0B3D2E] text-white p-4 flex items-center justify-between shadow-md">
+                <div className="bg-[#1a2f27] text-white p-4 flex items-center justify-between shadow-md">
                     <div className="flex items-center gap-3">
                         <div className="bg-brand-gold/20 p-2 rounded-full">
                             <Bot size={24} className="text-brand-gold" />
@@ -133,7 +133,7 @@ export default function BrokerChat() {
                             <div className={`
                                 max-w-[80%] rounded-2xl px-4 py-3 shadow-sm
                                 ${msg.sender === 'user'
-                                    ? 'bg-[#1a5f45] text-white rounded-tr-none'
+                                    ? 'bg-[#2c4a3e] text-white rounded-tr-none'
                                     : 'bg-white text-gray-800 border border-gray-100 rounded-tl-none'}
                             `}>
                                 <p className="text-sm leading-relaxed">{msg.text}</p>
@@ -164,12 +164,12 @@ export default function BrokerChat() {
                             value={inputText}
                             onChange={(e) => setInputText(e.target.value)}
                             placeholder="Type a message..."
-                            className="flex-1 px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0B3D2E] focus:border-transparent transition-all placeholder:text-gray-400 text-gray-800"
+                            className="flex-1 px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#1a2f27] focus:border-transparent transition-all placeholder:text-gray-400 text-gray-800"
                         />
                         <button
                             type="submit"
                             disabled={!inputText.trim()}
-                            className="bg-[#0B3D2E] text-white p-3 rounded-xl hover:bg-[#2c4a3e] disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-lg"
+                            className="bg-[#1a2f27] text-white p-3 rounded-xl hover:bg-[#2c4a3e] disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-lg"
                         >
                             <Send size={20} />
                         </button>
