@@ -2,7 +2,7 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
-const { GoogleGenerativeAI } = require("@google/generative-ai");
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 async function main() {
     console.log('--- GEMINI DEBUG ---');
@@ -26,7 +26,7 @@ async function main() {
         // But for node, we might need to use a different approach or just try 'gemini-1.0-pro'
 
         // Actually, let's try 'gemini-1.0-pro' which is often the stable one.
-        const model = genAI.getGenerativeModel({ model: "gemini-1.0-pro" });
+        const model = genAI.getGenerativeModel({ model: "gemini-3-flash-preview" });
 
         console.log('Sending test prompt...');
         const result = await model.generateContent("Hello, are you alive?");

@@ -75,7 +75,7 @@ Answer the user's question based on the above.
         // -------------------
 
         // 4. Call Gemini
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+        const model = genAI.getGenerativeModel({ model: "gemini-3-flash-preview" });
 
         const result = await generateContentWithRetry(model, prompt);
         const response = result.response;
