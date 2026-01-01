@@ -27,7 +27,12 @@ export default async function UserDetailPage({ params }: { params: { id: string 
     // Fetch Target User
     const targetUser = await prisma.user.findUnique({
         where: { id: params.id },
-        include: { businessProfile: true }
+        include: {
+            businessProfile: true,
+            documents: {
+                orderBy: { createdAt: 'desc' }
+            }
+        }
     });
 
     if (!targetUser) {
@@ -108,6 +113,64 @@ export default async function UserDetailPage({ params }: { params: { id: string 
                         </div>
                     </div>
                 </div>
+            </div>
+
+            {/* Legal Documents Section */}
+            <div className="mb-8 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                <div className="bg-gray-50 px-6 py-4 border-b border-gray-100 flex justify-between items-center">
+                    <div>
+                        <h3 className="text-lg font-bold text-brand-dark flex items-center gap-2">
+                            <FileText size={20} className="text-brand-gold" />
+                            Legal Documents & Uploads
+                        </h3>
+                        <p className="text-sm text-gray-500">All files uploaded by this user.</p>
+                    </div>
+                    <span className="bg-gray-200 text-gray-700 text-xs font-bold px-2 py-1 rounded-full">{targetUser.documents.length} Files</span>
+                </div>
+
+                {targetUser.documents.length === 0 ? (
+                    <div className="p-8 text-center text-gray-400">
+                        <p>No documents found for this user.</p>
+                    </div>
+                ) : (
+                    <div className="overflow-x-auto">
+                        <table className="w-full text-left text-sm">
+                            <thead className="bg-gray-50 text-gray-500 font-medium border-b border-gray-100">
+                                <tr>
+                                    <th className="px-6 py-3">Filename</th>
+                                    <th className="px-6 py-3">Size</th>
+                                    <th className="px-6 py-3">Uploaded</th>
+                                    <th className="px-6 py-3 text-right">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody className="divide-y divide-gray-100">
+                                {targetUser.documents.map((doc) => (
+                                    <tr key={doc.id} className="hover:bg-gray-50 transition-colors">
+                                        <td className="px-6 py-3 font-medium text-gray-900 flex items-center gap-2">
+                                            <FileText size={16} className="text-brand-blue" />
+                                            {doc.filename}
+                                        </td>
+                                        <td className="px-6 py-3 text-gray-500">
+                                            {(doc.size / 1024).toFixed(2)} KB
+                                        </td>
+                                        <td className="px-6 py-3 text-gray-500">
+                                            {new Date(doc.createdAt).toLocaleDateString()}
+                                        </td>
+                                        <td className="px-6 py-3 text-right">
+                                            <a
+                                                href={`/api/documents/${doc.id}`}
+                                                className="inline-flex items-center gap-1 text-brand-blue hover:text-brand-dark font-medium transition-colors"
+                                                target="_blank"
+                                            >
+                                                <Download size={14} /> Download
+                                            </a>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                )}
             </div>
 
             {/* Intake Data Grid */}
