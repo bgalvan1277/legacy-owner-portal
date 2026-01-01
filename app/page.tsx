@@ -87,7 +87,7 @@ export default function Home() {
         <div className="text-center mb-8 flex flex-col items-center">
           <div className="relative w-64 h-24 mb-2">
             <Image
-              src="/assets/logo-v2.png"
+              src="/assets/logo-dark.png"
               alt="Barnes Walker"
               fill
               className="object-contain"

@@ -36,7 +36,7 @@ export default function PortalSidebar({ role }: { role?: string, email?: string 
             <div className="p-8 border-b border-[#2c4a3e]">
                 <div className="relative w-48 h-12">
                     <Image
-                        src="/assets/logo-white.png"
+                        src="/assets/logo-v2.png"
                         alt="Barnes Walker"
                         fill
                         className="object-contain object-left"
