@@ -112,7 +112,7 @@ export default function UserListTable({ users }: UserListTableProps) {
                         ) : (
                             <tr>
                                 <td colSpan={9} className="px-6 py-8 text-center text-gray-500">
-                                    No users found matching "{searchQuery}"
+                                    No users found matching &quot;{searchQuery}&quot;
                                 </td>
                             </tr>
                         )}
