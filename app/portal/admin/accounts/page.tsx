@@ -2,8 +2,7 @@ import { prisma } from '@/lib/prisma';
 import { cookies } from 'next/headers';
 import ClientRedirect from '@/components/ClientRedirect';
 import { ShieldAlert, Users } from 'lucide-react';
-import { intakePhases } from '@/app/intakeConfig';
-import UserRowActions from './UserRowActions';
+import UserListTable from './UserListTable';
 
 export const dynamic = 'force-dynamic';
 
@@ -46,66 +45,7 @@ export default async function AccountsPage() {
                 <Users size={48} className="text-brand-gold opacity-50" />
             </div>
 
-            <div className="bg-white rounded-xl shadow border border-gray-100 overflow-hidden overflow-x-auto">
-                <table className="w-full text-left">
-                    <thead className="bg-gray-50 border-b border-gray-100">
-                        <tr>
-                            <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-widest whitespace-nowrap">Email</th>
-                            <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-widest whitespace-nowrap">First Name</th>
-                            <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-widest whitespace-nowrap">Last Name</th>
-                            <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-widest whitespace-nowrap">Phone</th>
-                            <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-widest whitespace-nowrap">Intake Progress</th>
-                            <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-widest whitespace-nowrap">Role</th>
-                            <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-widest whitespace-nowrap">Status</th>
-                            <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-widest whitespace-nowrap">Created</th>
-                            <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-widest text-right whitespace-nowrap">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-100">
-                        {allUsers.map((u) => {
-                            let progress = 0;
-                            if (u.businessProfile?.intakeData) {
-                                const data = u.businessProfile.intakeData as Record<string, any>;
-                                const completed = intakePhases.filter(p => p.questions.some(q => data[q.id])).length;
-                                progress = Math.round((completed / intakePhases.length) * 100);
-                            }
-
-                            return (
-                                <tr key={u.id} className="hover:bg-gray-50 transition-colors">
-                                    <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">{u.email}</td>
-                                    <td className="px-6 py-4 text-gray-600 whitespace-nowrap">{u.firstName || '-'}</td>
-                                    <td className="px-6 py-4 text-gray-600 whitespace-nowrap">{u.lastName || '-'}</td>
-                                    <td className="px-6 py-4 text-gray-600 whitespace-nowrap">{u.phone || '-'}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap">
-                                        <div className="flex items-center gap-2">
-                                            <div className="w-16 bg-gray-200 rounded-full h-1.5 overflow-hidden">
-                                                <div className={`h-full ${progress === 100 ? 'bg-green-500' : 'bg-brand-gold'}`} style={{ width: `${progress}%` }}></div>
-                                            </div>
-                                            <span className="text-xs text-gray-600 font-mono">{progress}%</span>
-                                        </div>
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap">
-                                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
-                                        ${u.role === 'ADMIN' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800'}`}>
-                                            {u.role}
-                                        </span>
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap">
-                                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
-                                        ${u.isApproved ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
-                                            {u.isApproved ? 'Active' : 'Pending'}
-                                        </span>
-                                    </td>
-                                    <td className="px-6 py-4 text-gray-500 text-sm whitespace-nowrap">{u.createdAt.toLocaleDateString()}</td>
-                                    <td className="px-6 py-4 text-right whitespace-nowrap">
-                                        <UserRowActions userId={u.id} />
-                                    </td>
-                                </tr>
-                            );
-                        })}
-                    </tbody>
-                </table>
-            </div>
+            <UserListTable users={allUsers} />
         </div>
     );
 }
